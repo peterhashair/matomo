@@ -54,5 +54,6 @@ jobs:
 
       - name: Prepare
         run: |
-             chmod x+ ./tests/travis/prepare.sh
+             chmod +x ./tests/travis/prepare.sh
              ./tests/travis/prepare.sh
+        shell: bash
