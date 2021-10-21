@@ -93,6 +93,5 @@ jobs:
           chmod a+rw ./plugins/*/tests/Integration/processed || true
 
        - name: Setup Nginx
-
          run: |
             docker ps
