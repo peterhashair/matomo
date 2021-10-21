@@ -19,12 +19,6 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-      nginx:
-        image: nginx
-        ports:
-          - 8080:80
-        volumes:
-          - /home/runner/work/:/var/www
       redis:
         image: redis:5.0
         ports:
@@ -94,3 +88,9 @@ jobs:
           chmod a+rw ./tests/lib/geoip-files || true
           chmod a+rw ./plugins/*/tests/System/processed || true
           chmod a+rw ./plugins/*/tests/Integration/processed || true
+
+       - name: Setup nginxs
+         run: |
+           docker run --name nginxapp --mount type=bind,source=/home/runner/work/matomo/matomo,target=/var/www/
+           --mount source=/home/runner/work/matomo/matomo/.github/scripts/piwiki_nginx.config,target=/etc/nginx/conf,readonly
+           -p 80:80 -d nginx
