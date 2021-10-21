@@ -49,7 +49,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, pdo_sqlite, gd, redis
-          ini-values: post_max_size=256M, max_execution_time=3000, memory_limit=1024M
+          ini-values: post_max_size=256M, max_execution_time=10000, memory_limit=2024M
           tools: composer:v2
           coverage: none
 
@@ -68,14 +68,10 @@ jobs:
         working-directory: ./tests/lib/screenshot-testing
         run: npm install
 
-      - name: installing config.ini.php
-        run: cp ./tests/travis/config.ini.travis.php  ./config/config.ini.php
-
-      - name: install Adjusting phpunit.xml
-        run: cp ./tests/PHPUnit/phpunit.xml.dist ./tests/PHPUnit/phpunit.xml
-
-      - name: Create tmp/ sub-directories
+      - name: installing config.ini.php && Adjusting phpunit.xml && tmp/ sub-directories
         run: |
+          cp ./tests/travis/config.ini.travis.php  ./config/config.ini.php
+          cp ./tests/PHPUnit/phpunit.xml.dist ./tests/PHPUnit/phpunit.xml
           mkdir -p ./tmp/assets
           mkdir -p ./tmp/cache
           mkdir -p ./tmp/latest
