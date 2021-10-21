@@ -95,6 +95,8 @@ jobs:
       - name: Install dependencies
         run : composer install
 
-      - name: Test Unit
+      - name: Unit Test
         run: ./console tests:run unit
 
+      - name: System Test
+        run: ./console tests:run system
