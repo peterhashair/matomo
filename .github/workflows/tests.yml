@@ -41,12 +41,9 @@ jobs:
           submodules: recursive
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, pdo_sqlite, gd, redis
-          tools: composer:v2
-          coverage: none
+        run:|
+           docker run -d --name phpfpm php:${{ matrix.php }}-fpm -v /home/runner/work/matomo/matomo:/var/www/html -p 9000:9000
+           docker exec -it phpfpm bash ls -la
 
       - name: Setup Node
         uses: actions/setup-node@v2
@@ -86,3 +83,4 @@ jobs:
       - name: Setup Nginx
         run: |
            docker run --name nginxapp -v /home/runner/work/matomo/matomo:/var/www/ -v /home/runner/work/matomo/matomo/.github/scripts/nginx.conf:/etc/nginx/nginx.conf -p 80:80 -d nginx
+           docker exec -it nginxapp bash ls -la
