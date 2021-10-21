@@ -28,7 +28,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ '7.2', 7.3', '7.4', '8.0', '8.1' ]
+        php: [ '7.2', '7.3', '7.4', '8.0']
 
     name: PHP ${{ matrix.php }}
 
@@ -43,7 +43,8 @@ jobs:
       - name: Setup PHP
         run: |
            docker run -d --name phpfpm php:${{ matrix.php }}-fpm -v /home/runner/work/matomo/matomo:/var/www/html -p 9000:9000
-           docker exec -it phpfpm bash ls -la
+           docker ps
+           docker exec -i phpfpm bash ls -la
 
       - name: Setup Node
         uses: actions/setup-node@v2
@@ -83,4 +84,5 @@ jobs:
       - name: Setup Nginx
         run: |
            docker run --name nginxapp -v /home/runner/work/matomo/matomo:/var/www/ -v /home/runner/work/matomo/matomo/.github/scripts/nginx.conf:/etc/nginx/nginx.conf -p 80:80 -d nginx
-           docker exec -it nginxapp bash ls -la
+           docker ps
+           docker exec -i nginxapp bash ls -la
