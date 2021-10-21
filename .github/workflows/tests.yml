@@ -89,8 +89,8 @@ jobs:
           chmod a+rw ./plugins/*/tests/System/processed || true
           chmod a+rw ./plugins/*/tests/Integration/processed || true
 
-       - name: Setup nginxs
-         run: |
+      - name: Setup Nginx
+        run: |
            docker run --name nginxapp --mount type=bind,source=/home/runner/work/matomo/matomo,target=/var/www/
            --mount source=/home/runner/work/matomo/matomo/.github/scripts/piwiki_nginx.config,target=/etc/nginx/conf,readonly
            -p 80:80 -d nginx
