@@ -49,6 +49,7 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, pdo_sqlite, gd, redis
+          ini-values: post_max_size=256M, max_execution_time=3000, memory_limit=1024M
           tools: composer:v2
           coverage: none
 
