@@ -28,9 +28,13 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ '7.2', '7.3', '7.4', '8.0']
+        php: [ '7.2', 7.3', '7.4', '8.0', '8.1' ]
+        stability: [prefer-lowest, prefer-stable]
+        include:
+          - php: '8.1'
+            stability: prefer-stable
 
-    name: PHP ${{ matrix.php }}
+    name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
 
     steps:
       - name: Checkout code
@@ -41,10 +45,12 @@ jobs:
           submodules: recursive
 
       - name: Setup PHP
-        run: |
-           docker run -d --name phpfpm php:${{ matrix.php }}-fpm -v /home/runner/work/matomo/matomo:/var/www/html -p 9000:9000
-           docker ps
-           docker exec -i phpfpm bash ls -la
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, pdo_sqlite, gd, redis
+          tools: composer:v2
+          coverage: none
 
       - name: Setup Node
         uses: actions/setup-node@v2
@@ -53,6 +59,8 @@ jobs:
 
       - name: install fonts
         run: |
+             docker exec -it nginx pwd
+             pwd
              git clone --recursive https://github.com/google/woff2.git ../fonts_woff2
              cd ../fonts_woff2
              make clean all
@@ -80,9 +88,15 @@ jobs:
           chmod a+rw ./tests/lib/geoip-files || true
           chmod a+rw ./plugins/*/tests/System/processed || true
           chmod a+rw ./plugins/*/tests/Integration/processed || true
+#
+#      - name: Setup Nginx
+#        run: |
+#          docker run --name nginxapp -v /home/runner/work/matomo/matomo:/var/www/ -v /home/runner/work/matomo/matomo/.github/scripts/piwiki_nginx.config:/etc/nginx/conf -p 80:80 -d nginx
+#          docker ps
 
-      - name: Setup Nginx
-        run: |
-           docker run --name nginxapp -v /home/runner/work/matomo/matomo:/var/www/ -v /home/runner/work/matomo/matomo/.github/scripts/nginx.conf:/etc/nginx/nginx.conf -p 80:80 -d nginx
-           docker ps
-           docker exec -i nginxapp bash ls -la
+      - name: Install dependencies
+        run : composer install
+
+      - name: Test Unit
+        run: ./console tests:run unit
+
