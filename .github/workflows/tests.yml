@@ -30,7 +30,7 @@ jobs:
       matrix:
         php: [ '7.2', 7.3', '7.4', '8.0', '8.1' ]
 
-    name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
+    name: PHP ${{ matrix.php }}
 
     steps:
       - name: Checkout code
@@ -85,6 +85,4 @@ jobs:
 
       - name: Setup Nginx
         run: |
-           docker run --name nginxapp --mount type=bind,source=/home/runner/work/matomo/matomo,target=/var/www/
-           --mount source=/home/runner/work/matomo/matomo/.github/scripts/piwiki_nginx.config,target=/etc/nginx/conf,readonly
-           -p 80:80 -d nginx
+           docker run --name nginxapp -v /home/runner/work/matomo/matomo:/var/www/ -v /home/runner/work/matomo/matomo/.github/scripts/nginx.conf:/etc/nginx/nginx.conf -p 80:80 -d nginx
