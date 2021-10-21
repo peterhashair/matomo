@@ -63,7 +63,7 @@ jobs:
 
       - name: install fonts
         run: |
-             ls -la
+             pwd
              git clone --recursive https://github.com/google/woff2.git ../fonts_woff2
              cd ../fonts_woff2
              make clean all
