@@ -52,8 +52,15 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      - name: Prepare
+      - name: install fonts
         run: |
-             chmod +x ./tests/travis/prepare.sh
-             ./tests/travis/prepare.sh
-        shell: bash
+             git clone --recursive https://github.com/google/woff2.git ../fonts_woff2
+             cd ../fonts_woff2
+             make clean all
+
+      - name: installing node/puppeteer
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+        working-directory: ./tests/lib/screenshot-testing
+        run : npm install
