@@ -12,12 +12,14 @@ jobs:
 
     services:
       mysql:
-        image: mysql:5.7
+        image: mariadb
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: piwik_tests
         ports:
           - 3306:3306
+        tmpfs:
+          - /var/lib/mysql
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       redis:
         image: redis:5.0
@@ -28,13 +30,9 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ '7.2', '7.3', '7.4', '8.0', '8.1' ]
-        stability: [prefer-stable]
-        include:
-          - php: '8.1'
-            stability: prefer-stable
+        tests: [ 'unit','system','integration' ]
 
-    name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
+    name: ${{ matrix.tests }} tests
 
     steps:
       - name: Checkout code
@@ -47,9 +45,9 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
+          php-version: 7.4
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, pdo_sqlite, gd, redis
-          ini-values: post_max_size=256M, max_execution_time=10000, memory_limit=2024M
+          ini-values: post_max_size=256M, max_execution_time=10000, memory_limit=4024M
           tools: composer:v2
           coverage: none
 
@@ -96,8 +94,6 @@ jobs:
         run : |
                sudo apt-get install tmux
                tmux new-session -d -s "php" php -S localhost:3000
-#      - name: Unit Test
-#        run: ./console tests:run unit
 
-      - name: System Test
-        run: ./console tests:run system
+      - name: Test runing
+        run: ./console tests:run ${{ matrix.tests }}
