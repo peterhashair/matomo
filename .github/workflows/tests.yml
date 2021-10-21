@@ -41,7 +41,7 @@ jobs:
           submodules: recursive
 
       - name: Setup PHP
-        run:|
+        run: |
            docker run -d --name phpfpm php:${{ matrix.php }}-fpm -v /home/runner/work/matomo/matomo:/var/www/html -p 9000:9000
            docker exec -it phpfpm bash ls -la
 
