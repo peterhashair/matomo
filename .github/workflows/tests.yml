@@ -23,6 +23,8 @@ jobs:
         image: nginx
         ports:
           - 8080:80
+        volumes:
+          - /home/runner/work/:/var/www
       redis:
         image: redis:5.0
         ports:
@@ -63,7 +65,7 @@ jobs:
 
       - name: install fonts
         run: |
-             docker ps
+             docker exec -it nginx pwd
              pwd
              git clone --recursive https://github.com/google/woff2.git ../fonts_woff2
              cd ../fonts_woff2
