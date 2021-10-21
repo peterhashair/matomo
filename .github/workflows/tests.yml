@@ -19,6 +19,10 @@ jobs:
         ports:
           - 33306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      nginx:
+        image: nginx:lastest
+        ports:
+          - 8080:80
       redis:
         image: redis:5.0
         ports:
@@ -59,10 +63,31 @@ jobs:
 
       - name: install fonts
         run: |
+             ls -la
              git clone --recursive https://github.com/google/woff2.git ../fonts_woff2
              cd ../fonts_woff2
              make clean all
 
       - name: installing node/puppeteer
         working-directory: ./tests/lib/screenshot-testing
-        run : npm install
+        run: npm install
+
+      - name: installing config.ini.php
+        run: cp ./tests/travis/config.ini.travis.php  ./config/config.ini.php
+
+      - name: install Adjusting phpunit.xml
+        run: cp ./tests/PHPUnit/phpunit.xml.dist ./tests/PHPUnit/phpunit.xml
+
+      - name: Create tmp/ sub-directories
+        run: |
+          mkdir -p ./tmp/assets
+          mkdir -p ./tmp/cache
+          mkdir -p ./tmp/latest
+          mkdir -p ./tmp/logs
+          mkdir -p ./tmp/sessions
+          mkdir -p ./tmp/templates_c
+          mkdir -p ./tmp/tcpdf
+          mkdir -p ./tmp/climulti
+          chmod a+rw ./tests/lib/geoip-files || true
+          chmod a+rw ./plugins/*/tests/System/processed || true
+          chmod a+rw ./plugins/*/tests/Integration/processed || true
