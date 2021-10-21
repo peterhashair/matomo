@@ -28,11 +28,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: ['7.3', '7.4', '8.0']
-        stability: [prefer-lowest, prefer-stable]
-        include:
-          - php: '8.1'
-            stability: prefer-stable
+        php: [ '7.2', 7.3', '7.4', '8.0', '8.1' ]
 
     name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
 
@@ -59,8 +55,6 @@ jobs:
 
       - name: install fonts
         run: |
-             docker exec -it nginx pwd
-             pwd
              git clone --recursive https://github.com/google/woff2.git ../fonts_woff2
              cd ../fonts_woff2
              make clean all
