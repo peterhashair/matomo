@@ -116,6 +116,7 @@ jobs:
           echo ${end}
           for item in ${arr[@]:${start}:${end}}
           do
+          echo ${item}
           ./console tests:run System ${item}
           done
 
