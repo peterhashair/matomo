@@ -31,7 +31,6 @@ jobs:
         tests: [ 'unit','system-0','system-1','system-2','system-3','system-4','integration','ui' ]
 
 
-    name: ${{ matrix.tests }} ${{ parts }} tests
 
     steps:
       - name: Checkout code
