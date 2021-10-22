@@ -270,7 +270,7 @@ END;
         $wholeTrace = preg_replace('/\\(\\d+\\)/', '', $wholeTrace);
         $wholeTrace = str_replace(PIWIK_INCLUDE_PATH, '', $wholeTrace);
 
-        $expected = <<<END
+        $expected = <<<EOD
 test message
 #0 /vendor/phpunit/phpunit/src/Framework/TestCase.php: Piwik\Plugins\Monolog\tests\Unit\Processor\ExceptionToTextProcessorTest->test_getMessageAndWholeBacktrace_shouldCombineCausedByExceptionBacktraces()
 #1 /vendor/phpunit/phpunit/src/Framework/TestCase.php: PHPUnit\Framework\TestCase->runTest()
@@ -310,7 +310,7 @@ caused by: caused by 2
 #9 /vendor/phpunit/phpunit/src/TextUI/Command.php: PHPUnit\TextUI\Command->run()
 #10 /vendor/phpunit/phpunit/phpunit: PHPUnit\TextUI\Command::main()
 #11 {main}
-END;
+EOD;
         $this->assertEquals($this->handleNewerPHPUnitTrace($expected), $wholeTrace);
     }
 
