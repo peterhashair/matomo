@@ -109,8 +109,9 @@ jobs:
           echo ${arr[@]}
           total=${#arr[@]}/5
           index=${matrix//[^0-9]/}
-          start=index*10
-          end=(index+1)*10
+          start=$(expr $index \* 10)
+          start1=$(expr $index + 1)
+          end=$(expr $start1 \* 10)
           echo ${start}
           echo ${end}
           for item in ${arr[@]:${start}:${end}}
