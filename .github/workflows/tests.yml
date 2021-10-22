@@ -28,14 +28,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tests: [ 'unit','integration','ui' ]
-        parts: [0]
-        include:
-          - tests: 'system'
-            parts: [0,11,21,31,41,51]
+        tests: [ 'unit','system-0','system-1','system-2','system-3','system-4','integration','ui' ]
 
 
-    name: ${{ matrix.tests }} tests
+    name: ${{ matrix.tests }} ${{ parts }} tests
 
     steps:
       - name: Checkout code
@@ -111,7 +107,8 @@ jobs:
         run: |
           arr=( $(ls | grep 'php'|sed -e 's/\.php$//') )
           total=${#arr[@]}/5
-          for item in ${arr[@]:${{ matrix.parts }}:${{ matrix.parts }}+10}
+          index=${${{ matrix.tests }//[^0-9]/}
+          for item in ${arr[@]:${index}:${index}+10}
           do
           ./console tests:run System ${item}
           done
