@@ -105,7 +105,7 @@ jobs:
         if: startsWith(matrix.tests,'system')
         run: |
           matrix=${{ matrix.tests }}
-          arr=( $(ls | grep 'php'|sed -e 's/\.php$//') )
+          arr=($(cd tests/PHPUnit/System; ls | grep 'php'|sed -e 's/\.php$//'))
           total=${#arr[@]}/5
           index=${matrix//[^0-9]/}
           for item in ${arr[@]:${index}:${index}+10}
