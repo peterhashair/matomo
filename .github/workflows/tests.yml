@@ -110,11 +110,10 @@ jobs:
         run: |
           arr=( $(ls | grep 'php'|sed -e 's/\.php$//') )
           total=${#arr[@]}/5
-           for item in ${arr[@]:${{ matrix.parts }}:${{ matrix.parts+10 }}}
-            do
-            ./console tests:run System ${item}
-            done
-
+          for item in ${arr[@]:${{ matrix.parts }}:${{ matrix.parts }}+10}
+          do
+          ./console tests:run System ${item}
+          done
 
       - name: UI tests
         if: matrix.tests == 'ui'
