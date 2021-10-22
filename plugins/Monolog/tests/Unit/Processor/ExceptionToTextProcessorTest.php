@@ -132,10 +132,11 @@ END;
         $_GET['trigger'] = 'archivephp';
 
         $wholeTrace = ExceptionToTextProcessor::getMessageAndWholeBacktrace($ex);
-
-        $expected = <<<END
-test message
-END;
+        ob_start();
+        ?>
+            test message
+        <?php
+        $expected = ob_get_clean();
 
         $this->assertEquals($expected, $wholeTrace);
     }
@@ -150,8 +151,8 @@ END;
         $wholeTrace = ExceptionToTextProcessor::getMessageAndWholeBacktrace($ex);
         $wholeTrace = preg_replace('/\\(\\d+\\)/', '', $wholeTrace);
         $wholeTrace = str_replace(PIWIK_INCLUDE_PATH, '', $wholeTrace);
-
-        $expected = <<<END
+ob_start();
+?>
 test message
 #0 /vendor/phpunit/phpunit/src/Framework/TestCase.php: Piwik\\Plugins\\Monolog\\tests\\Unit\\Processor\\ExceptionToTextProcessorTest->test_getMessageAndWholeBacktrace_printsBacktraceIfInCliMode_AndInCoreArchive_EvenIfGlobalVarIsNotSet()
 #1 /vendor/phpunit/phpunit/src/Framework/TestCase.php: PHPUnit\\Framework\\TestCase->runTest()
@@ -165,7 +166,8 @@ test message
 #9 /vendor/phpunit/phpunit/src/TextUI/Command.php: PHPUnit\\TextUI\\Command->run(Array, true)
 #10 /vendor/phpunit/phpunit/phpunit: PHPUnit\\TextUI\\Command::main()
 #11 {main}
-END;
+        <?php
+        $expected = ob_get_clean();
 
         $this->assertEquals($this->handleNewerPHPUnitTrace($expected), $wholeTrace);
     }
