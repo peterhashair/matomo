@@ -272,7 +272,7 @@ END;
 
         $expected = <<<EOD
 test message
-#0 /vendor/phpunit/phpunit/src/Framework/TestCase.php: Piwik\Plugins\Monolog\tests\Unit\Processor\ExceptionToTextProcessorTest->test_getMessageAndWholeBacktrace_shouldCombineCausedByExceptionBacktraces()
+#0 /vendor/phpunit/phpunit/src/Framework/TestCase.php: Piwik\Plugins\Monolog\\tests\Unit\Processor\ExceptionToTextProcessorTest->test_getMessageAndWholeBacktrace_shouldCombineCausedByExceptionBacktraces()
 #1 /vendor/phpunit/phpunit/src/Framework/TestCase.php: PHPUnit\Framework\TestCase->runTest()
 #2 /vendor/phpunit/phpunit/src/Framework/TestResult.php: PHPUnit\Framework\TestCase->runBare()
 #3 /vendor/phpunit/phpunit/src/Framework/TestCase.php: PHPUnit\Framework\TestResult->run()
@@ -285,7 +285,7 @@ test message
 #10 /vendor/phpunit/phpunit/phpunit: PHPUnit\TextUI\Command::main()
 #11 {main},
 caused by: caused by 1
-#0 /vendor/phpunit/phpunit/src/Framework/TestCase.php: Piwik\Plugins\Monolog\tests\Unit\Processor\ExceptionToTextProcessorTest->test_getMessageAndWholeBacktrace_shouldCombineCausedByExceptionBacktraces()
+#0 /vendor/phpunit/phpunit/src/Framework/TestCase.php: Piwik\Plugins\Monolog\\tests\Unit\Processor\ExceptionToTextProcessorTest->test_getMessageAndWholeBacktrace_shouldCombineCausedByExceptionBacktraces()
 #1 /vendor/phpunit/phpunit/src/Framework/TestCase.php: PHPUnit\Framework\TestCase->runTest()
 #2 /vendor/phpunit/phpunit/src/Framework/TestResult.php: PHPUnit\Framework\TestCase->runBare()
 #3 /vendor/phpunit/phpunit/src/Framework/TestCase.php: PHPUnit\Framework\TestResult->run()
