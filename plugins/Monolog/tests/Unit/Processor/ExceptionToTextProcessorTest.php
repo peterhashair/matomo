@@ -167,7 +167,7 @@ test message
 #11 {main}
 EOI;
 
-        $this->assertEquals("adsad", $wholeTrace);
+        $this->assertEquals($this->handleNewerPHPUnitTrace($expected), $wholeTrace);
     }
 
     public function test_getMessageAndWholeBacktrace_printsBacktraceIf_PIWIK_PRINT_ERROR_BACKTRACE_isDefined()
