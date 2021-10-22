@@ -47,20 +47,23 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, pdo_sqlite, gd, redis
           ini-values: post_max_size=256M, max_execution_time=10000, memory_limit=4024M
           tools: composer:v2
-          coverage: xdebug
+          coverage: none
 
       - name: Setup Node
+        if: ${{ matrix.tests }} == 'integration'
         uses: actions/setup-node@v2
         with:
             node-version: '12'
 
       - name: install fonts
+        if: ${{ matrix.tests }} == 'unit'
         run: |
              git clone --recursive https://github.com/google/woff2.git ../fonts_woff2
              cd ../fonts_woff2
              make clean all
 
       - name: installing node/puppeteer
+        if: ${{ matrix.tests }} == 'integration'
         working-directory: ./tests/lib/screenshot-testing
         run: npm install
 
@@ -89,6 +92,7 @@ jobs:
         run : composer install
 
       - name: Run PHP on 3000
+        if: ${{ matrix.tests }} == 'system'
         run : |
                sudo apt-get install tmux
                tmux new-session -d -s "php" php -S localhost:3000
