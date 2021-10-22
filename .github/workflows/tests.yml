@@ -29,7 +29,8 @@ jobs:
       fail-fast: false
       matrix:
         tests: [ 'unit','integration','ui' ]
-        inlucde:
+        parts: [0]
+        include:
           - tests: 'system'
             parts: [0,11,21,31,41,51]
 
