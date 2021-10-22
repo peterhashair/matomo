@@ -117,9 +117,9 @@ class ExceptionToTextProcessorTest extends \PHPUnit\Framework\TestCase
 
         $wholeTrace = ExceptionToTextProcessor::getMessageAndWholeBacktrace($ex);
 
-        $expected = <<<EOI
+        $expected = <<<END
 test message
-EOI;
+END;
 
         $this->assertEquals($expected, $wholeTrace);
     }
@@ -133,9 +133,9 @@ EOI;
 
         $wholeTrace = ExceptionToTextProcessor::getMessageAndWholeBacktrace($ex);
 
-        $expected = <<<EOI
+        $expected = <<<END
 test message
-EOI;
+END;
 
         $this->assertEquals($expected, $wholeTrace);
     }
@@ -151,7 +151,7 @@ EOI;
         $wholeTrace = preg_replace('/\\(\\d+\\)/', '', $wholeTrace);
         $wholeTrace = str_replace(PIWIK_INCLUDE_PATH, '', $wholeTrace);
 
-        $expected = <<<EOI
+        $expected = <<<END
 test message
 #0 /vendor/phpunit/phpunit/src/Framework/TestCase.php: Piwik\\Plugins\\Monolog\\tests\\Unit\\Processor\\ExceptionToTextProcessorTest->test_getMessageAndWholeBacktrace_printsBacktraceIfInCliMode_AndInCoreArchive_EvenIfGlobalVarIsNotSet()
 #1 /vendor/phpunit/phpunit/src/Framework/TestCase.php: PHPUnit\\Framework\\TestCase->runTest()
@@ -165,7 +165,7 @@ test message
 #9 /vendor/phpunit/phpunit/src/TextUI/Command.php: PHPUnit\\TextUI\\Command->run(Array, true)
 #10 /vendor/phpunit/phpunit/phpunit: PHPUnit\\TextUI\\Command::main()
 #11 {main}
-EOI;
+END;
 
         $this->assertEquals($this->handleNewerPHPUnitTrace($expected), $wholeTrace);
     }
@@ -273,7 +273,7 @@ EOI;
         $wholeTrace = preg_replace('/\\(\\d+\\)/', '', $wholeTrace);
         $wholeTrace = str_replace(PIWIK_INCLUDE_PATH, '', $wholeTrace);
 
-        $expected = <<<EOI
+        $expected = <<<END
 test message
 #0 /vendor/phpunit/phpunit/src/Framework/TestCase.php: Piwik\\Plugins\\Monolog\\tests\\Unit\\Processor\\ExceptionToTextProcessorTest->test_getMessageAndWholeBacktrace_shouldCombineCausedByExceptionBacktraces()
 #1 /vendor/phpunit/phpunit/src/Framework/TestCase.php: PHPUnit\\Framework\\TestCase->runTest()
@@ -313,7 +313,7 @@ caused by: caused by 2
 #9 /vendor/phpunit/phpunit/src/TextUI/Command.php: PHPUnit\\TextUI\\Command->run(Array, true)
 #10 /vendor/phpunit/phpunit/phpunit: PHPUnit\\TextUI\\Command::main()
 #11 {main}
-EOI;
+END;
 
         $this->assertEquals($this->handleNewerPHPUnitTrace($expected), $wholeTrace);
     }
