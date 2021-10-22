@@ -50,20 +50,20 @@ jobs:
           coverage: none
 
       - name: Setup Node
-        if: ${{ matrix.tests }} == 'integration'
+        if: matrix.tests == 'integration'
         uses: actions/setup-node@v2
         with:
             node-version: '12'
 
       - name: install fonts
-        if: ${{ matrix.tests }} == 'unit'
+        if:  matrix.tests == 'unit'
         run: |
              git clone --recursive https://github.com/google/woff2.git ../fonts_woff2
              cd ../fonts_woff2
              make clean all
 
       - name: installing node/puppeteer
-        if: ${{ matrix.tests }} == 'integration'
+        if: matrix.tests == 'integration'
         working-directory: ./tests/lib/screenshot-testing
         run: npm install
 
