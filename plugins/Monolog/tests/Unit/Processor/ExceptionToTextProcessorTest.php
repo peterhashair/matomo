@@ -164,7 +164,7 @@ test message
 #11 {main}
 EOD;
 
-        $this->assertEquals($expected, $wholeTrace);
+        $this->assertEquals($this->handleNewerPHPUnitTrace($expected), $wholeTrace);
     }
 
     public function test_getMessageAndWholeBacktrace_printsBacktraceIf_PIWIK_PRINT_ERROR_BACKTRACE_isDefined()
@@ -270,7 +270,7 @@ END;
         $wholeTrace = preg_replace('/\\(\\d+\\)/', '', $wholeTrace);
         $wholeTrace = str_replace(PIWIK_INCLUDE_PATH, '', $wholeTrace);
 
-        $expected = <<<EOD
+        $expected = <<<END
 test message
 #0 /vendor/phpunit/phpunit/src/Framework/TestCase.php: Piwik\Plugins\Monolog\\tests\Unit\Processor\ExceptionToTextProcessorTest->test_getMessageAndWholeBacktrace_shouldCombineCausedByExceptionBacktraces()
 #1 /vendor/phpunit/phpunit/src/Framework/TestCase.php: PHPUnit\Framework\TestCase->runTest()
@@ -298,7 +298,7 @@ caused by: caused by 1
 #10 /vendor/phpunit/phpunit/phpunit: PHPUnit\TextUI\Command::main()
 #11 {main},
 caused by: caused by 2
-#0 /vendor/phpunit/phpunit/src/Framework/TestCase.php: Piwik\Plugins\Monolog\tests\Unit\Processor\ExceptionToTextProcessorTest->test_getMessageAndWholeBacktrace_shouldCombineCausedByExceptionBacktraces()
+#0 /vendor/phpunit/phpunit/src/Framework/TestCase.php: Piwik\Plugins\Monolog\\tests\Unit\Processor\ExceptionToTextProcessorTest->test_getMessageAndWholeBacktrace_shouldCombineCausedByExceptionBacktraces()
 #1 /vendor/phpunit/phpunit/src/Framework/TestCase.php: PHPUnit\Framework\TestCase->runTest()
 #2 /vendor/phpunit/phpunit/src/Framework/TestResult.php: PHPUnit\Framework\TestCase->runBare()
 #3 /vendor/phpunit/phpunit/src/Framework/TestCase.php: PHPUnit\Framework\TestResult->run()
@@ -310,7 +310,7 @@ caused by: caused by 2
 #9 /vendor/phpunit/phpunit/src/TextUI/Command.php: PHPUnit\TextUI\Command->run()
 #10 /vendor/phpunit/phpunit/phpunit: PHPUnit\TextUI\Command::main()
 #11 {main}
-EOD;
+END;
         $this->assertEquals($this->handleNewerPHPUnitTrace($expected), $wholeTrace);
     }
 
