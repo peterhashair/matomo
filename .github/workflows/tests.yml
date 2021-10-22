@@ -26,7 +26,7 @@ jobs:
         options: --entrypoint redis-server
 
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         tests: [ 'unit','system','integration' ]
 
