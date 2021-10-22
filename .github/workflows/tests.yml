@@ -109,8 +109,11 @@ jobs:
           echo ${arr[@]}
           total=${#arr[@]}/5
           index=${matrix//[^0-9]/}
-          echo ${index}
-          for item in ${arr[@]:${index}:${index}+10}
+          start=index*10
+          end=(index+1)*10
+          echo ${start}
+          echo ${end}
+          for item in ${arr[@]:${start}:${end}}
           do
           ./console tests:run System ${item}
           done
