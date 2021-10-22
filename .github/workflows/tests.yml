@@ -28,7 +28,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tests: [ 'unit','system','integration' ]
+        tests: [ 'unit','integration','ui' ]
+        inlucde:
+          - tests: [system]
+            parts: [0,11,21,31,41,51]
+
 
     name: ${{ matrix.tests }} tests
 
@@ -53,17 +57,17 @@ jobs:
         if: matrix.tests == 'integration'
         uses: actions/setup-node@v2
         with:
-            node-version: '12'
+          node-version: '12'
 
       - name: install fonts
-        if:  matrix.tests == 'integration'
+        if: matrix.tests =='ui'
         run: |
-             git clone --recursive https://github.com/google/woff2.git ../fonts_woff2
-             cd ../fonts_woff2
-             make clean all
+          git clone --recursive https://github.com/google/woff2.git ../fonts_woff2
+          cd ../fonts_woff2
+          make clean all
 
       - name: installing node/puppeteer
-        if: matrix.tests == 'integration'
+        if: matrix.tests == 'integration' || matrix.tests =='ui'
         working-directory: ./tests/lib/screenshot-testing
         run: npm install
 
@@ -82,20 +86,39 @@ jobs:
           chmod a+rw ./tests/lib/geoip-files || true
           chmod a+rw ./plugins/*/tests/System/processed || true
           chmod a+rw ./plugins/*/tests/Integration/processed || true
-#
-#      - name: Setup Nginx
-#        run: |
-#          docker run --name nginxapp -v /home/runner/work/matomo/matomo:/var/www/ -v /home/runner/work/matomo/matomo/.github/scripts/piwiki_nginx.config:/etc/nginx/conf -p 80:80 -d nginx
-#          docker ps
+      #
+      #      - name: Setup Nginx
+      #        run: |
+      #          docker run --name nginxapp -v /home/runner/work/matomo/matomo:/var/www/ -v /home/runner/work/matomo/matomo/.github/scripts/piwiki_nginx.config:/etc/nginx/conf -p 80:80 -d nginx
+      #          docker ps
 
       - name: Install dependencies
-        run : composer install
+        run: composer install
 
       - name: Run PHP on 3000
-        if: matrix.tests == 'system'
-        run : |
-               sudo apt-get install tmux
-               tmux new-session -d -s "php" php -S localhost:3000
+        if: startsWith(matrix.tests,'system') ||  matrix.tests == 'ui'
+        run: |
+          sudo apt-get install tmux
+          tmux new-session -d -s "php" php -S localhost:3000
 
       - name: Test runing
+        if:  matrix.tests == 'unit'
         run: ./console tests:run ${{ matrix.tests }}
+
+      - name: Run System test
+        if: startsWith(matrix.tests,'system')
+        run: |
+          arr=( $(ls | grep 'php'|sed -e 's/\.php$//') )
+          total=${#arr[@]}/5
+           for item in ${arr[@]:${{ matrix.parts }}:${{ matrix.parts+10 }}}
+            do
+            ./console tests:run System ${item}
+            done
+
+
+      - name: UI tests
+        if: matrix.tests == 'ui'
+        run: |
+          sudo apt-get install ttf-mscorefonts-installer imagemagick imagemagick-doc
+          sudo apt-get remove ttf-bitstream-vera
+
