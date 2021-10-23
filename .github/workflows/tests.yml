@@ -25,7 +25,7 @@ jobs:
     steps:
       - name: Setup Mysql
         run: |
-          docker run --name mariadb -p 3306:3306 --tmpfs /var/lib/mysql:rw -e MYSQL_DATABASE=piwik_tests -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d maradb
+          docker run --name mariadb -p 3306:3306 --tmpfs /var/lib/mysql:rw -e MYSQL_DATABASE=piwik_tests -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d mariadb
           docker ps -a
 
       - name: Checkout code
