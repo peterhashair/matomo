@@ -11,14 +11,6 @@ jobs:
     runs-on: ubuntu-20.04
 
     services:
-      mysql:
-        image: mariadb
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: piwik_tests
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       redis:
         image: redis:5.0
         ports:
@@ -28,11 +20,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tests: [ 'unit','system-0','system-1','system-2','system-3','system-4','integration','ui' ]
-
-
+        tests: [ 'unit','system','integration','ui' ]
 
     steps:
+      - name: Setup Mysql
+        run: |
+          docker run --name mariadb -p 3306:3306 --tmpfs /var/lib/mysql:rw -e MYSQL_DATABASE=piwik_tests -e MYSQL_ALLOW_EMPTY_PASSWORD=yes -d maradb
+          docker ps -a
+
       - name: Checkout code
         uses: actions/checkout@v2
         with:
@@ -102,23 +97,6 @@ jobs:
         run: ./console tests:run ${{ matrix.tests }}
 
       - name: Run System test
-        if: startsWith(matrix.tests,'system')
-        run: |
-          matrix=${{ matrix.tests }}
-          arr=($(cd tests/PHPUnit/System; ls | grep 'php'|sed -e 's/\.php$//'))
-          echo ${arr[@]}
-          total=${#arr[@]}/5
-          index=${matrix//[^0-9]/}
-          start=$(expr $index \* 10)
-          start1=$(expr $index + 1)
-          end=$(expr $start1 \* 10)
-          echo ${start}
-          echo ${end}
-          for item in ${arr[@]:${start}:${end}}
-          do
-          echo ${item}
-          ./console tests:run System ${item}
-          done
 
       - name: UI tests
         if: matrix.tests == 'ui'
