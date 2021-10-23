@@ -96,8 +96,6 @@ jobs:
         if:  matrix.tests == 'unit'
         run: ./console tests:run ${{ matrix.tests }}
 
-      - name: Run System test
-
       - name: UI tests
         if: matrix.tests == 'ui'
         run: |
