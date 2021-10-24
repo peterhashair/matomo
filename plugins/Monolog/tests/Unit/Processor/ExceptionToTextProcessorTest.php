@@ -324,6 +324,9 @@ EOI;
             $input = str_replace('TestRunner->doRun', 'TestRunner->run', $input);
         }
 
+        if (!extension_loaded('xdebug')) {
+            $input = preg_replace("/\([^)]+\)/", "", $input);
+        }
         return $input;
     }
 }
