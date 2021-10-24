@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tests: [ 'UnitTests', 'SystemTests for Plugins' ,'SystemTests for Core' , 'IntegrationTests', 'JavascriptTests-js', 'AngularJSTests-js', 'UITests-js' ]
+        tests: [ 'UnitTests', 'SystemTestsPlugins-php' ,'SystemTestsCore-php' , 'IntegrationTests-php', 'JavascriptTests-js', 'AngularJSTests-js', 'UITests-js' ]
 
     steps:
       - name: Setup Mysql
@@ -49,13 +49,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '12'
-
-      - name: install fonts
-        if: startsWith(matrix.tests,'UITests')
-        run: |
-          git clone --recursive https://github.com/google/woff2.git ../fonts_woff2
-          cd ../fonts_woff2
-          make clean all
 
       - name: installing node/puppeteer
         if: matrix.tests == 'integration' || matrix.tests =='ui'
@@ -88,7 +81,7 @@ jobs:
          composer install --ignore-platform-reqs
 
       - name: Run PHP on 3000
-        if: startsWith(matrix.tests,'SystemTests') ||  endsWith(matrix.tests,'js')
+        if: endsWith(matrix.tests,'php') ||  endsWith(matrix.tests,'js')
         run: |
           sudo apt-get install tmux
           tmux new-session -d -s "php" php -S localhost:3000
@@ -97,9 +90,19 @@ jobs:
         if: matrix.tests == 'UnitTests'
         run: ./vendor/phpunit/phpunit/phpunit --configuration ./tests/PHPUnit/phpunit.xml --testsuite UnitTests
 
+      - name: Test runing
+        if: endsWith(matrix.tests,'php')
+        run: .vendor/phpunit/phpunit/phpunit --configuration ./tests/PHPUnit/phpunit.xml --testsuite ${{ matrix.test }}
+
+
       - name: UI tests
         if: matrix.tests == 'Js-UITests'
         run: |
+          git clone --recursive https://github.com/google/woff2.git ../fonts_woff2
+          cd ../fonts_woff2
+          make clean all
           sudo apt-get install ttf-mscorefonts-installer imagemagick imagemagick-doc
           sudo apt-get remove ttf-bitstream-vera
+          cd /tests/lib/screenshot-testing
+          npm install
 
