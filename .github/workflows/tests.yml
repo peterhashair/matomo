@@ -95,7 +95,7 @@ jobs:
 
       - name: Test runing
         if: matrix.tests == 'UnitTests'
-        run: ./console tests:run ${{ matrix.tests }}
+        run: ./vendor/phpunit/phpunit/phpunit --configuration ./tests/PHPUnit/phpunit.xml --testsuite UnitTests
 
       - name: UI tests
         if: matrix.tests == 'Js-UITests'
