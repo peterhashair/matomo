@@ -326,8 +326,7 @@ EOI;
         }
 
         if (!extension_loaded('xdebug')) {
-            $input = preg_replace("/Object\([^)]+\)/", "", $input);
-            $input = preg_replace("/\([^)]+\)/", "()", $input);
+            $input = preg_replace("/\(([^()]*+|(?R))*\)/", "()", $input);
         }
         return $input;
     }
