@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tests: [ 'UnitTests', 'SystemTestsPlugins' ,'SystemTestsCore' , 'IntegrationTests', 'JavascriptTests-js', 'AngularJSTests-js', 'UITests-js' ]
+        tests: [ 'UnitTests', 'SystemTestsPlugins' ,'SystemTestsCore' , 'IntegrationTestsCore','IntegrationTestsPlugins', 'JavascriptTests-js', 'AngularJSTests-js', 'UITests-js' ]
 
     steps:
       - name: Setup Mysql
