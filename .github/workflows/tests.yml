@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tests: [ 'UnitTests', 'SystemTestsPlugins-php' ,'SystemTestsCore-php' , 'IntegrationTests-php', 'JavascriptTests-js', 'AngularJSTests-js', 'UITests-js' ]
+        tests: [ 'UnitTests', 'SystemTestsPlugins' ,'SystemTestsCore' , 'IntegrationTests', 'JavascriptTests-js', 'AngularJSTests-js', 'UITests-js' ]
 
     steps:
       - name: Setup Mysql
@@ -91,7 +91,7 @@ jobs:
         run: ./vendor/phpunit/phpunit/phpunit --configuration ./tests/PHPUnit/phpunit.xml --testsuite UnitTests
 
       - name: Test runing
-        if: endsWith(matrix.tests,'php')
+        if: startsWith(matrix.tests,'SystemTests') || startsWith(matrix.tests,'IntegrationTests')
         run: ./vendor/phpunit/phpunit/phpunit --configuration ./tests/PHPUnit/phpunit.xml --testsuite ${{ matrix.tests }}
 
 
