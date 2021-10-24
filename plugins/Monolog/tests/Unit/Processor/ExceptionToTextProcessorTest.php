@@ -15,8 +15,6 @@ use Piwik\Db;
 use Piwik\Log;
 use Piwik\Piwik;
 use Piwik\Plugins\Monolog\Processor\ExceptionToTextProcessor;
-/vendor/phpunit/phpunit/src/Framework/TestCase.php: PHPUnit\Framework\TestResult->run()\n
-/vendor/phpunit/phpunit/src/Framework/TestCase.php: PHPUnit\Framework\TestResult->run)\n
 /**
  * @group Log
  * @covers \Piwik\Plugins\Monolog\Processor\ExceptionToTextProcessor
