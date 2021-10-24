@@ -56,6 +56,7 @@ class ExceptionToTextProcessorTest extends \PHPUnit\Framework\TestCase
     /**
      * @test
      */
+
     public function it_should_replace_message_with_formatted_exception()
     {
         $processor = new ExceptionToTextProcessor();
@@ -77,7 +78,7 @@ class ExceptionToTextProcessorTest extends \PHPUnit\Framework\TestCase
             ),
         );
 
-        $this->assertEquals($expected, $result);
+        $this->assertEquals($expected['message'], $result['message']);
     }
 
     /**
