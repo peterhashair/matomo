@@ -92,7 +92,7 @@ jobs:
 
       - name: Test runing
         if: endsWith(matrix.tests,'php')
-        run: ./vendor/phpunit/phpunit/phpunit --configuration ./tests/PHPUnit/phpunit.xml --testsuite ${{ matrix.test }}
+        run: ./vendor/phpunit/phpunit/phpunit --configuration ./tests/PHPUnit/phpunit.xml --testsuite ${{ matrix.tests }}
 
 
       - name: UI tests
