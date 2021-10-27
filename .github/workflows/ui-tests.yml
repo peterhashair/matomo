@@ -56,7 +56,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0
+          php-version: 7.4
           extensions: bcmath, ldap, curl, zip, pdo_mysql, mysqli, gd, redis
           ini-values: post_max_size=256M, max_execution_time=10000, memory_limit=-1, always_populate_raw_post_data=-1,zend.exception_ignore_args = Off
           tools: composer:v2
@@ -101,10 +101,11 @@ jobs:
       #
       - name: Setup LAMP apache2
         run: |
-          sudo apt install libapache2-mod-php8.0
+          sudo apt install php8.0-fpm libapache2-mod-fcgid
           sudo cp /home/runner/work/matomo/matomo/.github/scripts/test.conf /etc/apache2/sites-available/
           sudo apachectl -M
-          sudo a2enmod actions alias proxy_fcgi rewrite php
+          sudo a2enmod actions alias proxy_fcgi rewrite php setenvif
+          sudo a2enconf php8.0-fpm
           sudo a2ensite test.conf
           sudo systemctl restart apache2
           curl localhost
