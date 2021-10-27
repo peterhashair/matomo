@@ -42,16 +42,16 @@ jobs:
         parts: [ 0 ]
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          lfs: true
-          submodules: recursive
-
-      - name: Install dependencies
-        run: |
-          composer install --ignore-platform-reqs
+#      - name: Checkout code
+#        uses: actions/checkout@v2
+#        with:
+#          ref: ${{ github.event.pull_request.head.sha }}
+#          lfs: true
+#          submodules: recursive
+#
+#      - name: Install dependencies
+#        run: |
+#          composer install --ignore-platform-reqs
 
       - name: Setup PHP and Nginx
         run: |
@@ -60,6 +60,7 @@ jobs:
           sudo systemctl start php8.0-fpm
           ls -la /run/php
           ls -la /var/run/php
+          cat /etc/php/8.0/fpm/pool.d/www.conf
           sudo chown -R $USER:$USER /home/runner/work/matomo/matomo
           sudo nginx -c "/home/runner/work/matomo/matomo/.github/scripts/matomo_nginx.conf"
           curl localhost
