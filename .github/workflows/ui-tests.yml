@@ -104,7 +104,7 @@ jobs:
           sudo apt install php8.0-fpm libapache2-mod-fcgid
           sudo cp /home/runner/work/matomo/matomo/.github/scripts/test.conf /etc/apache2/sites-available/
           sudo apachectl -M
-          sudo a2enmod actions alias proxy_fcgi rewrite php setenvif
+          sudo a2enmod actions alias proxy_fcgi rewrite setenvif
           sudo a2enconf php8.0-fpm
           sudo a2ensite test.conf
           sudo systemctl restart apache2
