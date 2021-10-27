@@ -60,7 +60,8 @@ jobs:
           SCRIPTS="/home/runner/work/matomo/matomo/.github/scripts/"
           sudo cp "$SCRIPTS/matomo-fpm.conf" /etc/php/8.0/fpm/pool.d/
           sudo systemctl restart php8.0-fpm
-          sudo systemctl status php8.0-fpm
+          sudo systemctl status php8.0-fpm.service
+          sudo journalctl -xe
 
 #      - name: test
 #        run: sudo systemctl start php8.0-fpm
