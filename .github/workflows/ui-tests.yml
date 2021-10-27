@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   Linux:
-    runs-on: macos-10.15
+    runs-on: ubuntu-20.04
 
     services:
       redis:
@@ -51,7 +51,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer global require laravel/valet
+          composer global require cpriego/valet-linux
           valet install
           composer install --ignore-platform-reqs
 
