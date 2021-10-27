@@ -106,7 +106,7 @@ jobs:
           sudo a2ensite test.conf
           sudo systemctl restart apache2
           curl localhost
-          cat ${APACHE_LOG_DIR}/error.log
+          cat /var/log/apache2/error.log
 #
 #
 #      - name: Javascript tests Build
