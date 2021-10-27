@@ -60,8 +60,7 @@ jobs:
           sudo systemctl start php8.0-fpm
           ls -la /run/php
           ls -la /var/run/php
-          echo "listen.mode = 0660" >> /etc/php/8.0/fpm/pool.d/www.conf
-          cat /etc/php/8.0/fpm/pool.d/www.conf
+          sudo echo "listen.mode = 0660" >> /etc/php/8.0/fpm/pool.d/www.conf
           sudo systemctl restart php8.0-fpm
           sudo chown -R $USER:$USER /home/runner/work/matomo/matomo
           sudo nginx -c "/home/runner/work/matomo/matomo/.github/scripts/matomo_nginx.conf"
