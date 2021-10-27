@@ -53,62 +53,58 @@ jobs:
         run: |
           composer install --ignore-platform-reqs
 
-      - name: Setup PHP fpm
-        continue-on-error: true
-        run: |
-          sudo systemctl status php8.0-fpm
-      #          SCRIPTS="/home/runner/work/matomo/matomo/.github/scripts/"
-      #          sudo cp "$SCRIPTS/matomo-fpm.conf" /etc/php/8.0/fpm/pool.d/
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          extensions: bcmath, ldap, curl, zip, pdo_mysql, mysqli, gd, redis
+          ini-values: post_max_size=256M, max_execution_time=10000, memory_limit=-1, always_populate_raw_post_data=-1,zend.exception_ignore_args = Off
+          tools: composer:v2
+          coverage: none
 
-      - name: Setup Nginx
+
+      #
+      #      - name: Setup Node
+      #        uses: actions/setup-node@v2
+      #        with:
+      #          node-version: '12'
+      #
+      #      - name: installing node/puppeteer
+      #        working-directory: ./tests/lib/screenshot-testing
+      #        run: |
+      #          git lfs pull --exclude=
+      #          npm install
+      #          node --version
+      #
+      #      - name: installing config.ini.php && Adjusting phpunit.xml && tmp/ sub-directories
+      #        run: |
+      #          cp .github/scripts/config.ini.github.php config/config.ini.php
+      #          cp ./tests/PHPUnit/phpunit.xml.dist ./tests/PHPUnit/phpunit.xml
+      #          mkdir -p ./tmp/assets
+      #          mkdir -p ./tmp/cache
+      #          mkdir -p ./tmp/cache/tracker
+      #          mkdir -p ./tmp/latest
+      #          mkdir -p ./tmp/logs
+      #          mkdir -p ./tmp/sessions
+      #          mkdir -p ./tmp/templates_c
+      #          mkdir -p ./tmp/nonexistant
+      #          mkdir -p ./tmp/tcpdf
+      #          mkdir -p ./tmp/climulti
+      #          mkdir -p /tmp
+      #          chmod a+rw ./tests/lib/geoip-files || true
+      #          chmod a+rw ./plugins/*/tests/System/processed || true
+      #          chmod a+rw ./plugins/*/tests/Integration/processed || true
+      #
+      #      - name: Install dependencies
+      #        run: |
+      #          composer install --ignore-platform-reqs
+      #
+      - name: Setup LAMP apache2
         run: |
-          sudo chown -R $USER:$USER /home/runner/work/matomo/matomo
-          sudo nginx -c "/home/runner/work/matomo/matomo/.github/scripts/matomo_nginx.conf"
+          sudo cp /home/runner/work/matomo/matomo/.github/scripts/test.conf /etc/apache2/sites-available/
+          sudo a2ensite test.conf
+          sudo systemctl restart apache2
           curl localhost
-          cat /home/runner/work/matomo/matomo/tmp/error.log
-
-#
-#      - name: Setup Node
-#        uses: actions/setup-node@v2
-#        with:
-#          node-version: '12'
-#
-#      - name: installing node/puppeteer
-#        working-directory: ./tests/lib/screenshot-testing
-#        run: |
-#          git lfs pull --exclude=
-#          npm install
-#          node --version
-#
-#      - name: installing config.ini.php && Adjusting phpunit.xml && tmp/ sub-directories
-#        run: |
-#          cp .github/scripts/config.ini.github.php config/config.ini.php
-#          cp ./tests/PHPUnit/phpunit.xml.dist ./tests/PHPUnit/phpunit.xml
-#          mkdir -p ./tmp/assets
-#          mkdir -p ./tmp/cache
-#          mkdir -p ./tmp/cache/tracker
-#          mkdir -p ./tmp/latest
-#          mkdir -p ./tmp/logs
-#          mkdir -p ./tmp/sessions
-#          mkdir -p ./tmp/templates_c
-#          mkdir -p ./tmp/nonexistant
-#          mkdir -p ./tmp/tcpdf
-#          mkdir -p ./tmp/climulti
-#          mkdir -p /tmp
-#          chmod a+rw ./tests/lib/geoip-files || true
-#          chmod a+rw ./plugins/*/tests/System/processed || true
-#          chmod a+rw ./plugins/*/tests/Integration/processed || true
-#
-#      - name: Install dependencies
-#        run: |
-#          composer install --ignore-platform-reqs
-#
-#      - name: Setup LAMP apache2
-#        run: |
-#          sudo cp /home/runner/work/matomo/matomo/.github/scripts/test.conf /etc/apache2/sites-available/
-#          sudo a2ensite test.conf
-#          sudo systemctl restart apache2
-#          curl localhost
 #
 #
 #      - name: Javascript tests Build
