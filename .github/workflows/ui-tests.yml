@@ -101,6 +101,7 @@ jobs:
       #
       - name: Setup LAMP apache2
         run: |
+          sudo apt install libapache2-mod-php
           sudo cp /home/runner/work/matomo/matomo/.github/scripts/test.conf /etc/apache2/sites-available/
           sudo apachectl -M
           sudo a2enmod actions alias proxy_fcgi rewrite php
