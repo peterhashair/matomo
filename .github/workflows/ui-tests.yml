@@ -19,21 +19,21 @@ permissions:
 jobs:
   Linux:
     runs-on: ubuntu-20.04
-
-    services:
-      redis:
-        image: redis:5.0
-        ports:
-          - 6379:6379
-        options: --entrypoint redis-server
-      mariadb:
-        image: mariadb:latest
-        ports:
-          - 3306:3306
-        env:
-          MYSQL_DATABASE: piwik_tests
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-        options: --tmpfs /var/lib/mysql:rw --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+    #
+    #    services:
+    #      redis:
+    #        image: redis:5.0
+    #        ports:
+    #          - 6379:6379
+    #        options: --entrypoint redis-server
+    #      mariadb:
+    #        image: mariadb:latest
+    #        ports:
+    #          - 3306:3306
+    #        env:
+    #          MYSQL_DATABASE: piwik_tests
+    #          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    #        options: --tmpfs /var/lib/mysql:rw --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
 
     strategy:
       fail-fast: false
@@ -42,16 +42,16 @@ jobs:
         parts: [ 0 ]
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          lfs: true
-          submodules: recursive
-
-      - name: Install dependencies
-        run: |
-          composer install --ignore-platform-reqs
+      #      - name: Checkout code
+      #        uses: actions/checkout@v2
+      #        with:
+      #          ref: ${{ github.event.pull_request.head.sha }}
+      #          lfs: true
+      #          submodules: recursive
+      #
+      #      - name: Install dependencies
+      #        run: |
+      #          composer install --ignore-platform-reqs
 
       - name: Setup PHP and Nginx
         run: |
@@ -60,12 +60,15 @@ jobs:
           sudo apt install php8.0-fpm
           sudo systemctl start php8.0-fpm
           sed -i "s/@USER@/$USER/g" "$SCRIPTS/php-fpm.ini"
+
+      - name: Setup php-fpm
+        run: |
           which php-fpm
           sudo php-fpm --fpm-config "$SCRIPTS/php-fpm.ini"
-          sudo chown -R $USER:$USER /home/runner/work/matomo/matomo
-          sudo nginx -c "/home/runner/work/matomo/matomo/.github/scripts/matomo_nginx.conf"
-          curl localhost
-          cat /home/runner/work/matomo/matomo/tmp/error.log
+#          sudo chown -R $USER:$USER /home/runner/work/matomo/matomo
+#          sudo nginx -c "/home/runner/work/matomo/matomo/.github/scripts/matomo_nginx.conf"
+#          curl localhost
+#          cat /home/runner/work/matomo/matomo/tmp/error.log
 
 #
 #      - name: Setup Node
