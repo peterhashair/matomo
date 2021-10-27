@@ -63,7 +63,10 @@ jobs:
 
       - name: Setup php-fpm
         run: |
-          ls -l /usr/sbin/php-fpm
+          cd /usr/sbin
+          ls -l
+          cd /usr/local/sbin
+          ls -l
 #          sudo chown -R $USER:$USER /home/runner/work/matomo/matomo
 #          sudo nginx -c "/home/runner/work/matomo/matomo/.github/scripts/matomo_nginx.conf"
 #          curl localhost
