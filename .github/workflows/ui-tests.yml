@@ -54,6 +54,7 @@ jobs:
 #          composer install --ignore-platform-reqs
 
       - name: Setup PHP fpm
+        continue-on-error: true
         run: |
           USER=$(whoami)
           SCRIPTS="/home/runner/work/matomo/matomo/.github/scripts/"
