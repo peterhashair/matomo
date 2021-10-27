@@ -51,16 +51,21 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer global require cpriego/valet-linux
-          valet install
           composer install --ignore-platform-reqs
 
       - name: Setup PHP and Nginx
         run: |
-          valet park
-          curl matomo.test
-
-
+          USER=$(whoami)
+          SCRIPTS="/home/runner/work/matomo/matomo/.github/scripts/"
+          sudo apt install php8.0-fpm
+          sudo systemctl start php8.0-fpm
+          sed -i "s/@USER@/$USER/g" "$SCRIPTS/php-fpm.ini"
+          which php-fpm
+          sudo php-fpm --fpm-config "$SCRIPTS/php-fpm.ini"
+          sudo chown -R $USER:$USER /home/runner/work/matomo/matomo
+          sudo nginx -c "/home/runner/work/matomo/matomo/.github/scripts/matomo_nginx.conf"
+          curl localhost
+          cat /home/runner/work/matomo/matomo/tmp/error.log
 
 #
 #      - name: Setup Node
