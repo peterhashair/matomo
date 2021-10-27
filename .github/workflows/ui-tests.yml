@@ -61,7 +61,7 @@ jobs:
           sed -i "s/@USER@/$USER/g" "$SCRIPTS/php-fpm.ini"
           sudo /usr/sbin/php-fpm8.0 --fpm-config "$SCRIPTS/php-fpm.ini"
           sudo systemctl status php8.0-fpm
-          sudo systemctl start php8.0-fpm
+          sudo systemctl restart php8.0-fpm
 
       - name: Setup Nginx
         run: |
