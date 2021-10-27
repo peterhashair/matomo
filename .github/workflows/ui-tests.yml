@@ -102,9 +102,11 @@ jobs:
       - name: Setup LAMP apache2
         run: |
           sudo cp /home/runner/work/matomo/matomo/.github/scripts/test.conf /etc/apache2/sites-available/
+          sudo a2enmod actions alias proxy_fcgi rewrite
           sudo a2ensite test.conf
           sudo systemctl restart apache2
           curl localhost
+          cat ${APACHE_LOG_DIR}/error.log
 #
 #
 #      - name: Javascript tests Build
