@@ -49,6 +49,10 @@ jobs:
           lfs: true
           submodules: recursive
 
+      - name: Install dependencies
+        run: |
+          composer install --ignore-platform-reqs
+
       - name: Setup PHP and Nginx
         run: |
           php -v
