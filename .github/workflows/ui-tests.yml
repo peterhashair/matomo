@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   Linux:
-    runs-on: ubuntu-20.04
+    runs-on: macOS 10.15
 
     services:
       redis:
@@ -51,20 +51,16 @@ jobs:
 
       - name: Install dependencies
         run: |
+          composer global require laravel/valet
+          valet install
           composer install --ignore-platform-reqs
 
       - name: Setup PHP and Nginx
         run: |
-          USER=$(whoami)
-          SCRIPTS="/home/runner/work/matomo/matomo/.github/scripts/"
-          sudo apt install php8.0-fpm
-          sudo systemctl start php8.0-fpm
-          sed -i "s/@USER@/$USER/g" "$SCRIPTS/php-fpm.ini"
-          sudo php-fpm --fpm-config "$SCRIPTS/php-fpm.ini"
-          sudo chown -R $USER:$USER /home/runner/work/matomo/matomo
-          sudo nginx -c "/home/runner/work/matomo/matomo/.github/scripts/matomo_nginx.conf"
-          curl localhost
-          cat /home/runner/work/matomo/matomo/tmp/error.log
+          valet park
+          curl matomo.test
+
+
 
 #
 #      - name: Setup Node
