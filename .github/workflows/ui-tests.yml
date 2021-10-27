@@ -56,9 +56,9 @@ jobs:
       - name: Setup PHP fpm
         continue-on-error: true
         run: |
-#          SCRIPTS="/home/runner/work/matomo/matomo/.github/scripts/"
-#          sudo cp "$SCRIPTS/matomo-fpm.conf" /etc/php/8.0/fpm/pool.d/
           sudo systemctl status php8.0-fpm
+      #          SCRIPTS="/home/runner/work/matomo/matomo/.github/scripts/"
+      #          sudo cp "$SCRIPTS/matomo-fpm.conf" /etc/php/8.0/fpm/pool.d/
 
       - name: Setup Nginx
         run: |
