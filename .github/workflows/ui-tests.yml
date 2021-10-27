@@ -52,6 +52,12 @@ jobs:
 #      - name: Install dependencies
 #        run: |
 #          composer install --ignore-platform-reqs
+      - name: make php
+        run: |
+          mkdir -p  /home/runner/work/matomo/matomo
+          cd /home/runner/work/matomo/matomo
+          touch index.php
+          echo "<?php echo "test";?>" >> index.php
 
       - name: Setup PHP and Nginx
         run: |
