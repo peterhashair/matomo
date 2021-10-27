@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   Linux:
-    runs-on: ubuntu-20.04
+    runs-on: macos-10.15
 
     services:
       redis:
