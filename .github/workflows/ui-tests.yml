@@ -42,12 +42,12 @@ jobs:
         parts: [ 0 ]
 
     steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v2
-#        with:
-#          ref: ${{ github.event.pull_request.head.sha }}
-#          lfs: true
-#          submodules: recursive
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          lfs: true
+          submodules: recursive
 #
 #      - name: Install dependencies
 #        run: |
@@ -56,12 +56,10 @@ jobs:
       - name: Setup PHP fpm
         run: |
           USER=$(whoami)
-          cat /etc/php/8.0/fpm/php-fpm.conf
-#          SCRIPTS="/home/runner/work/matomo/matomo/.github/scripts/"
-#          sudo systemctl stop php8.0-fpm
-#          sed -i "s/@USER@/$USER/g" "$SCRIPTS/php-fpm.ini"
-#          sudo /usr/sbin/php-fpm8.0 --fpm-config "$SCRIPTS/php-fpm.ini"
-#          sudo systemctl status php8.0-fpm
+          SCRIPTS="/home/runner/work/matomo/matomo/.github/scripts/"
+          sudo cp "$SCRIPTS/matomo-fpm.conf" /etc/php/8.0/fpm/pool.d/
+          sudo systemctl restart php8.0-fpm
+          sudo systemctl status php8.0-fpm
 
 #      - name: test
 #        run: sudo systemctl start php8.0-fpm
